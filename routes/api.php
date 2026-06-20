@@ -3,8 +3,16 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\AuthController;
 
-Route::apiResource('posts', PostController::class);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+
+// 🔥 PROTECT POSTS
+Route::middleware('auth:sanctum')->apiResource('posts', PostController::class);
+
+// 🔥 TAMBAHAN CEK USER LOGIN
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
